@@ -1,9 +1,12 @@
-import HTTP from "http";
-import { serverHandler } from "../app";
+/**
+ * 創建服務器
+ */
+import HTTP, { Server } from "http";
+import { serverHandler } from "../src/controller/app";
 
-const PORT: number = 5000;
+const PORT: number = 8090;
 
-const server: HTTP.Server = HTTP.createServer(serverHandler);
+const server: Server = HTTP.createServer(serverHandler);
 
 server.listen(PORT, (): void => {
   console.log(
