@@ -51,9 +51,74 @@ showBelief(`L'Internationale Sera le genre humain.`);
     ```json
     {
       "scripts": {
-        "dev": "ts-node binary/server.ts"
+        "dev": "ts-node index.ts"
       },
     }
     ```
 
 ---
+
+## 在 Docker 上運行程序
+
+注：默認你已安裝 Docker
+
+### 1. 創建 Dockerfile
+
+- 文件名建議使用默認的 `Dockerfile`，注意首字母大寫。
+
+```Dockerfile
+# 定義基於哪個鏡像，可以用“鏡像名:版本號”指定版本
+FROM node
+# 定義程序運行在容器（容器基於鏡像創建）的哪個目録
+WORKDIR /app
+# 複製本地目録内的 package.json 至容器目録
+COPY package.json /app/
+# 安裝依頼
+RUN npm install
+# 複製本地目録内的文件至容器目録（可用 .dockerignore 文件過濾文件）
+# 在安裝依賴之行複製是因爲不希望每次改動業務代碼都重新安裝一次依頼
+COPY . /app/
+# 定義暴露容器的哪個端口（本地無法直接訪問，需要在創建容器時映射）
+EXPOSE 8090
+# 定義容器啟動後執行的命令（即啟動項目的命令）
+CMD ["npm", "run", "dev"]
+```
+
+### 2. 基於 Dockerfile 生成鏡像文件
+
+```shell
+# --tag 縮寫 -t，用來給鏡像命名，如果不命名則名字顯示爲 none
+docker build --tag nickname .
+
+# 查看所有鏡像
+docker image ls
+
+# 删除指定鏡像 如果創建了容器需要加 --force（簡寫 -f）
+docker iamge rm --force 鏡像名或ID
+```
+
+### 3. 基於鏡像創䢖容器
+
+```shell
+# -publish -p, 本地端口:容器端口；--detach -d, 後臺運行
+docker run --publish 1848:1848 --detach --name nickname 鏡像名或ID
+
+# 查看所有容器 不加 --all 則查看當前運行中的容器
+docker ps --all
+
+# 删除容器 删除運行中的容器要加 --force（簡寫 -f）
+docker rm --force 容器名或ID
+```
+
+### 4. 在瀏覽器中打開端口
+
+- /
+
+### Docker 常用指令
+
+```shell
+# 查看 docker 幫助
+docker --help
+# 查看 docker 指令的幫助
+docker 指令 iamge 
+```
