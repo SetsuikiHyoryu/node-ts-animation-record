@@ -1,0 +1,27 @@
+# 版本查找： https://docs.docker.com/compose/compose-file/compose-versioning/
+version: '3'
+services:
+  node-app:
+    build: .
+    ports:
+      - 8090:8090
+    volumes:
+      - ./:/app:ro
+      - node-modules:/app/node_modules
+    environment:
+      - PORT=8090
+    # env_file:
+    #   - ./.env
+    command: npm run serve
+
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=hyoryu
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongo-db:/data/db # 爲卷起名
+
+volumes:
+  mongo-db:
+  node-modules:

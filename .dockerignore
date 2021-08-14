@@ -3,6 +3,7 @@ node_modules
 # docker config files
 Dockerfile
 .dockerignore
+docker-compose*
 
 # git files
 .git
