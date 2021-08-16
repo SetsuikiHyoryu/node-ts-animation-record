@@ -2,11 +2,10 @@
  * 創建服務器
  */
 import { createServer, Server } from 'http'
-import mongoose from 'mongoose'
+import { connect } from 'mongoose'
 import { serverHandler } from '../source/controller/app'
 
-mongoose
-  .connect('mongodb://hyoryu:password@172.30.0.2:27017/?authSource=admin')
+connect('mongodb://admin:password@mongo:27017/?authSource=admin')
   .then(() => console.log('success to connect database'))
   .catch((error) => console.log(error))
 
